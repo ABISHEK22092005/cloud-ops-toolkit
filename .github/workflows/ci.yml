@@ -1,0 +1,28 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Lint Bash script with ShellCheck
+        run: |
+          sudo apt-get update && sudo apt-get install -y shellcheck
+          shellcheck sys_health.sh
+
+      - name: Build Docker Image
+        run: |
+          docker build -t cloud-ops-health:ci .
+
+      - name: Test Run Docker Container
+        run: |
+          docker run --rm cloud-ops-health:ci
