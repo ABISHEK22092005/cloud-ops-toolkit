@@ -9,16 +9,22 @@ A lightweight system health monitoring toolkit for Linux environments, container
 - Identifies top memory-consuming processes
 - Minimal footprint via Alpine Linux containerization
 - Automated CI pipeline with ShellCheck linting and container smoke tests
+- Published public container registry distribution via Docker Hub
 
 ## Quickstart
 
-### Run with Docker:
+### Run via Docker Hub (No cloning required):
+```bash
+docker run --rm abishekn2005/cloud-ops-health:latest
+```
+
+### Build & Run Locally:
 ```bash
 docker build -t cloud-ops-health:1.0 .
 docker run --rm cloud-ops-health:1.0
 ```
 
-### Run Locally:
+### Run Script Directly:
 ```bash
 chmod +x sys_health.sh
 ./sys_health.sh
