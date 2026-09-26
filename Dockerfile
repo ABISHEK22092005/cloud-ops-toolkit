@@ -1,17 +1,16 @@
-# Use a lightweight official Alpine Linux base image (~5MB)
 FROM alpine:3.19
 
-# Install bash and procps (which provides ps and free commands)
-RUN apk update && apk add --no-cache bash procps
+# Install tools
+RUN apk add --no-cache procps curl
 
-# Set the working directory inside the container
+# 1. Create a dedicated non-root group and user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 WORKDIR /app
+COPY sys_health.sh .
+RUN chmod +x sys_health.sh
 
-# Copy the monitoring script from your laptop into the container
-COPY sys_health.sh /app/sys_health.sh
+# 2. Switch to the non-root user (no more root privileges)
+USER appuser
 
-# Make sure the script is executable
-RUN chmod +x /app/sys_health.sh
-
-# Set the default command to execute when the container launches
-CMD ["/bin/bash", "/app/sys_health.sh"]
+ENTRYPOINT ["./sys_health.sh"]
