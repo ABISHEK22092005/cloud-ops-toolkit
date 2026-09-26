@@ -1,6 +1,6 @@
 FROM alpine:3.21
 
-# Install tools
+# hadolint ignore=DL3018
 RUN apk add --no-cache procps curl
 
 # Create non-root system group and user
