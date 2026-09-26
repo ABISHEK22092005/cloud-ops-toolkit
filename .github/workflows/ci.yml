@@ -22,13 +22,15 @@ jobs:
       - name: Build Docker Image
         run: docker build -t cloud-ops-health:test .
 
-      - name: "Security Scan: Aqua Trivy Vulnerability Scanner"
+      - name: "Security Scan: Aqua Trivy Vulnerability Gate"
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'cloud-ops-health:test'
           format: 'table'
-          exit-code: '0'
-          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL'
 
       - name: Run Container Smoke Test
         run: docker run --rm cloud-ops-health:test
